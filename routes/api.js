@@ -104,7 +104,7 @@ router.get('/loginOut', verifyLogin, (req, res) => {
 /**
  * 验证码
  */
-router.get('/captcha', (req, res) => {
+router.get('/captcha.png', (req, res) => {
   const str = parseInt(Math.random() * 9000 + 1000) //随机生成数字
   req.session.captcha = str // 存入session
   req.session.cookie.maxAge = 1000 * 60 // 验证码有效时间1m
@@ -113,6 +113,7 @@ router.get('/captcha', (req, res) => {
   png.color(80, 80, 80, 255)
   const img = png.getBase64()
   const imgbase64 = new Buffer(img, 'base64')
+  res.set('Content-Type', 'image/png')
   res.send(imgbase64)
 })
 /**
