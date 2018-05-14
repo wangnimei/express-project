@@ -1,7 +1,7 @@
 module.exports = function (req, res, next) {
-  const userId = req.cookies.userId
+  const loginSign = req.session.loginSign
 
-  if (userId) {
+  if (loginSign) {
     next()
   } else {
     return res.send({

@@ -5,7 +5,7 @@ class Mysql {
     this.options = {
       host     : '127.0.0.1',
       user     : 'root',
-      password : '123456',
+      password : 'Wow/010013/',
       database : 'test'
     }
   }
