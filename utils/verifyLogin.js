@@ -1,10 +1,10 @@
 module.exports = function (req, res, next) {
-  const loginSign = req.session.loginSign
+  const userId = req.session.userId
 
-  if (loginSign) {
+  if (userId) {
     next()
   } else {
-    return res.send({
+    res.send({
       status: 3000,
       success: false,
       msg: '登录超时'

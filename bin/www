@@ -7,12 +7,12 @@
 var app = require('../app');
 var debug = require('debug')('express-project:server');
 var http = require('http');
+var isProduction = process.env.NODE_ENV === 'production';
 
 /**
  * Get port from environment and store in Express.
  */
-
-var port = normalizePort(process.env.PORT || '80');
+var port = normalizePort(process.env.PORT || isProduction ? '80' : '3000');
 app.set('port', port);
 
 /**

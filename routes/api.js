@@ -7,7 +7,7 @@ const captchapng = require('captchapng')
 /**
  * 检查账户是否被注册
  */
-router.get('/checkAccount', function(req, res) {
+router.get('/checkAccount', (req, res) => {
   const account = req.query.account
   const sql = `select id from login where account = ?`
 
@@ -42,7 +42,7 @@ router.post('/registry', async (req, res) => {
     const rows2 = await mysql.query(res, sql2, [rows.insertId, `用户${parseInt(Math.random() * 10000)}`])
 
     if (rows2) {
-      req.session.loginSign = true
+      // req.session.loginSign = true
       req.session.userId = rows.insertId
       req.session.cookie.maxAge = 60 * 1000 * 10
       return res.send({
@@ -72,7 +72,7 @@ router.post('/login', (req, res, next) => {
   mysql.query(res, sql, [account]).then(rows => {
     if (rows.length) {
       if (rows[0].password === md5Pass) {
-        req.session.loginSign = true
+        // req.session.loginSign = true
         req.session.userId = rows[0].id
         req.session.cookie.maxAge = 60 * 1000 * 10
         return res.send({
@@ -93,12 +93,13 @@ router.post('/login', (req, res, next) => {
 /**
  * 登出
  */
-router.get('/loginOut', verifyLogin, (req, res) => {
-  req.session.loginSign = false
+router.get('/loginOut', (req, res) => {
+  req.session.cookie.maxAge = -1
+
   res.send({
-    status: 3000,
-    success: false,
-    msg: '退出登录'
+    status: 1000,
+    success: true,
+    msg: '操作成功'
   })
 })
 /**
@@ -165,6 +166,20 @@ router.get('/getList', verifyLogin, (req, res) => {
       msg: '操作成功'
     })
   })
+})
+/**
+ * 验证登录状态
+ */
+router.get('/verifyLogin', verifyLogin, (req, res) => {
+  const userId = req.session.userId
+
+  if (userId) {
+    res.send({
+      status: 1000,
+      success: true,
+      msg: '已登录'
+    })
+  }
 })
 
 module.exports = router
